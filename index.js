@@ -175,7 +175,6 @@
         const $box = $(box)
         const currentScroll = $(document).scrollTop()
         if (currentScroll > $box.offset().top && currentScroll < ($box.height() + $box.offset().top)) {
-          console.log(`${$box.attr('id')}-link`)
           $(`#${$box.attr('id')}-link`).addClass('active')
         } else {
           $(`#${$box.attr('id')}-link`).removeClass('active')
