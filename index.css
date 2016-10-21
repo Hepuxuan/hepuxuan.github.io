@@ -6,7 +6,6 @@
     margin: auto;
     background-color: rgb(255, 255, 255);
     padding-bottom: 40px;
-    position: relative;
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
 }
@@ -23,23 +22,42 @@ section {
   margin-bottom: 15px;
   font-weight: bold;
 }
-
-header {
-  position: fixed;
-  max-width: 1280px;
-  padding-right: 30px;
-  padding-left: 30px;
-  margin: auto;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  width: 100%;
-  height: 60px;
-  background-color: rgba(255,255,255, 0.9);
+@media (min-width: 640px) {
+  .page-body{
+    position: relative;
+  }
+  header {
+    position: fixed;
+    max-width: 1280px;
+    padding-right: 30px;
+    padding-left: 30px;
+    margin: auto;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+    background-color: rgba(255,255,255, 0.9);
+  }
 }
 
-main {
-  margin-top: 60px;
+@media (min-width: 640px) and (max-width: 770px) {
+  header {
+    height: 100px;
+  }
+
+  main {
+    margin-top: 100px;
+  }
+}
+
+@media (min-width: 771px) {
+  header {
+    height: 60px;
+  }
+
+  main {
+    margin-top: 60px;
+  }
 }
 
 .logo {
