@@ -1,79 +1,17 @@
-'use strict';
-
-/* global $, _  */
-
-(function () {
-  function splitCamelCaseToString(s) {
-    return s.split(/(?=[A-Z])/).join(' ').replace(/^./, function (l) {
-      return l.toUpperCase();
-    });
-  }
-
-  function renderNav(name) {
-    return '\n      <nav>\n        <ul class="vertical medium-horizontal menu">\n          <li>\n            <h3 class="logo"><a href="/">' + name + '</a></h3>\n          </li>\n          <li class="active" id="contact-link">\n            <a class="in-site" href="#contact">Contact</a>\n          </li>\n          <li id="experience-link">\n            <a class="in-site" href="#experience">Experience</a>\n          </li>\n          <li id="skills-link">\n            <a class="in-site" href="#skills">Skills</a>\n          </li>\n          <li id="education-link">\n            <a class="in-site" href="#education">Education</a>\n          </li>\n          <li id="projects-link">\n            <a class="in-site" href="#projects">Projects</a>\n          </li>\n          <li>\n            <a href="https://github.com/hepuxuan/">Github</a>\n          </li>\n        </ul>\n      </nav>\n    ';
-  }
-
-  function renderContact(contact) {
-    return '\n      <section class="main-box" id="contact">\n        <h4 class="title">Contact:</h4>\n        <div class="row">\n          <div class="small-12 medium-2 large-1 columns item-label">Tel:</div>\n          <div class="small-12 medium-10 large-10 columns"><a href="tel:' + contact.tel.replace(/\D/g, '') + '">' + contact.tel + '</a></div>\n        </div>\n        <div class="row">\n          <div class="small-12 medium-2 large-1 columns item-label">Address:</div>\n          <div class="small-12 medium-10 large-10 columns"><a href="https://www.google.com/maps/place/' + window.encodeURI(contact.address) + '">' + contact.address + '</a></div>\n        </div>\n        <div class="row">\n          <div class="small-12 medium-2 large-2 columns item-label">Email:</div>\n          <div class="small-12 medium-10 large-10 columns"><a href="mailto:' + contact.email + '">' + contact.email + '</a></div>\n        </div>\n      </section>\n    ';
-  }
-
-  function renderExperience(experience) {
-    var name = experience.name;
-    var range = experience.range;
-    delete experience.name;
-    delete experience.range;
-    var rest = experience;
-    return '\n      <section>\n        <section class="row align-justify">\n          <div class="small-12 medium-12 large-8 columns">\n            <h5>' + name + '</h5>\n          </div>\n          <div class="small-12 medium-12 large-4 columns"> \n            ' + range + '\n          </div>\n        </section>\n        \n        ' + _.map(rest, function (value, key) {
-      return '\n            <section class="row">\n              <div class="small-12 medium-12 large-2 columns item-label">' + splitCamelCaseToString(key) + ':</div>\n              <div class="small-12 medium-12 large-10 columns">' + value + '</div>\n            </section>\n          ';
-    }).join('') + '\n      </section>\n    ';
-  }
-
-  function renderExperiences(experiences) {
-    return '\n      <section class="main-box" id="experience">\n        <h4 class="title">Experience:</h4>\n        ' + _.map(experiences, renderExperience).join('') + '\n      </section>\n    ';
-  }
-
-  function renderSkills(skills) {
-    return '\n      <section class="main-box" id="skills">\n        <h4>Skills:</h4>\n        ' + _.map(skills, function (value, key) {
-      return '\n            <section class="row">\n              <div class="small-12 medium-12 large-2 columns item-label">' + splitCamelCaseToString(key) + ':</div>\n              <div class="small-12 medium-12 large-10 columns">' + value + '</div>\n            </section>\n          ';
-    }).join('') + '\n      </section>\n    ';
-  }
-
-  function renderEducation(educations) {
-    return '\n      <section class="main-box" id="education">\n        <h4>Education:</h4>\n        ' + _.map(educations, function (education) {
-      return '\n            <section class="row align-justify">\n              <div class="small-12 medium-12 large-8 columns">' + education.degree + ',&nbsp;&nbsp;' + education.school + '</div>\n              <div class="small-12 medium-12 large-4 columns">' + education.range + '</div>\n            </section>\n          ';
-    }).join('') + '\n      </section>\n    ';
-  }
-
-  function renderProjects(projects) {
-    return '\n      <section class="main-box" id="projects">\n        <h4>Project:</h4>\n        ' + _.map(projects, function (project) {
-      return '\n            <section class="row align-justify">\n              <h5>' + project.name + ':</h5>\n              <section>' + project.details + '</section>\n            </section>\n          ';
-    }).join('') + '\n      </section>\n    ';
-  }
-
-  function render(detail) {
-    var template = '\n      <div class="page-body">\n        <header>\n          ' + renderNav(detail.name) + '\n        </header>\n        <main>\n          ' + renderContact(detail.contact) + '\n          <hr/>\n          ' + renderExperiences(detail.experiences) + '\n          <hr/>\n          ' + renderSkills(detail.skills) + '\n          <hr/>\n          ' + renderEducation(detail.educations) + '\n          <hr/>\n          ' + renderProjects(detail.projects) + '\n        </main>\n      </div>\n    ';
-    document.getElementById('root').innerHTML = template;
-    $('nav a.in-site').on('click', function (e) {
-      e.preventDefault();
-      var sectionSelector = $(e.target).attr('href');
-      $('html,body').animate({
-        scrollTop: $(sectionSelector).offset().top - 60
-      });
-    });
-
-    $(document).on('scroll', function () {
-      $(document).scrollTop();
-      $('.main-box').each(function (i, box) {
-        var $box = $(box);
-        var currentScroll = $(document).scrollTop();
-        if (currentScroll > $box.offset().top && currentScroll < $box.height() + $box.offset().top) {
-          $('#' + $box.attr('id') + '-link').addClass('active');
-        } else {
-          $('#' + $box.attr('id') + '-link').removeClass('active');
-        }
-      });
-    });
-  }
-
-  $.getJSON('profile.json').done(render);
-})();
+"use strict"
+var indexPage=function(){function n(n){return n.split(/(?=[A-Z])/).join(" ").replace(/^./,function(n){return n.toUpperCase()})}function e(){document.getElementById("nav").innerHTML='\n      <nav>\n        <ul class="vertical medium-horizontal menu">\n          <li>\n            <h3 class="logo"><a href="/">'+d.detail.name+"</a></h3>\n          </li>\n          <li "+("contacts"===d.activeSection?'class="active"':"")+'>\n            <a class="in-site" href="#contacts">Contact</a>\n          </li>\n          <li '+("experiences"===d.activeSection?'class="active"':"")+'>\n            <a class="in-site" href="#experiences">Experience</a>\n          </li>\n          <li '+("skills"===d.activeSection?'class="active"':"")+'>\n            <a class="in-site" href="#skills">Skills</a>\n          </li>\n          <li '+("educations"===d.activeSection?'class="active"':"")+'>\n            <a class="in-site" href="#educations">Education</a>\n          </li>\n          <li '+("projects"===d.activeSection?'class="active"':"")+'>\n            <a class="in-site" href="#projects">Projects</a>\n          </li>\n          <li>\n            <a href="https://github.com/hepuxuan/">Github</a>\n          </li>\n        </ul>\n      </nav>\n    ',$("nav a.in-site").on("click",function(n){n.preventDefault()
+var e=$(n.target).attr("href")
+$("html,body").animate({scrollTop:$(e).offset().top-60})})}function i(){var n=d.detail.contact
+document.getElementById("contacts").innerHTML='\n      <h4 class="title">Contact:</h4>\n      <div class="row">\n        <div class="small-12 medium-2 large-1 columns item-label">Tel:</div>\n        <div class="small-12 medium-10 large-10 columns"><a href="tel:'+n.tel.replace(/\D/g,"")+'">'+n.tel+'</a></div>\n      </div>\n      <div class="row">\n        <div class="small-12 medium-2 large-1 columns item-label">Address:</div>\n        <div class="small-12 medium-10 large-10 columns"><a href="https://www.google.com/maps/place/'+window.encodeURI(n.address)+'">'+n.address+'</a></div>\n      </div>\n      <div class="row">\n        <div class="small-12 medium-2 large-2 columns item-label">Email:</div>\n        <div class="small-12 medium-10 large-10 columns"><a href="mailto:'+n.email+'">'+n.email+"</a></div>\n      </div>\n    "}function a(e){var i=e.name,a=e.range
+delete e.name,delete e.range
+var s=e
+return'\n      <section>\n        <section class="row align-justify">\n          <div class="small-12 medium-12 large-8 columns">\n            <h5>'+i+'</h5>\n          </div>\n          <div class="small-12 medium-12 large-4 columns"> \n            '+a+"\n          </div>\n        </section>\n        \n        "+_.map(s,function(e,i){return'\n            <section class="row">\n              <div class="small-12 medium-12 large-2 columns item-label">'+n(i)+':</div>\n              <div class="small-12 medium-12 large-10 columns">'+e+"</div>\n            </section>\n          "}).join("")+"\n      </section>\n    "}function s(){var n=d.detail.experiences
+document.getElementById("experiences").innerHTML='\n      <h4 class="title">Experience:</h4>\n      '+_.map(n,a).join("")+"\n    "}function t(){var e=d.detail.skills
+document.getElementById("skills").innerHTML="\n      <h4>Skills:</h4>\n      "+_.map(e,function(e,i){return'\n          <section class="row">\n            <div class="small-12 medium-12 large-2 columns item-label">'+n(i)+':</div>\n            <div class="small-12 medium-12 large-10 columns">'+e+"</div>\n          </section>\n        "}).join("")+"\n    "}function l(){var n=d.detail.educations
+document.getElementById("educations").innerHTML="\n      <h4>Education:</h4>\n      "+_.map(n,function(n){return'\n          <section class="row align-justify">\n            <div class="small-12 medium-12 large-8 columns">'+n.degree+",&nbsp;&nbsp;"+n.school+'</div>\n            <div class="small-12 medium-12 large-4 columns">'+n.range+"</div>\n          </section>\n        "}).join("")+"\n    "}function c(){var n=d.detail.projects
+document.getElementById("projects").innerHTML="\n      <h4>Project:</h4>\n      "+_.map(n,function(n){return'\n          <section class="row align-justify">\n            <h5>'+n.name+":</h5>\n            <section>"+n.details+"</section>\n          </section>\n        "}).join("")+"\n    "}function o(){var n='\n      <div class="page-body">\n        <header id="nav"></header>\n        <main>\n          <section class="main-box" id="contacts"></section>\n          <hr/>\n          <section class="main-box" id="experiences"></section>\n          <hr/>\n          <section class="main-box" id="skills"></section>\n          <hr/>\n          <section class="main-box" id="educations"></section>\n          <hr/>\n          <section class="main-box" id="projects"></section>\n        </main>\n      </div>\n    '
+document.getElementById("root").innerHTML=n}function r(){o(),e(),i(),s(),t(),l(),c(),$(document).on("scroll",function(){$(".main-box").each(function(n,i){var a=$(i),s=$(document).scrollTop()
+if(s>a.offset().top&&s<a.height()+a.offset().top){var t=a.attr("id")
+t!==d.activeSection&&(d.activeSection=a.attr("id"),e())}})})}var d={activeSection:"contacts",detail:{}}
+return{render:r,state:d}}()
+$(document).ready(function(){$.getJSON("profile.json").then(function(n){indexPage.state.detail=n}).done(indexPage.render)})
