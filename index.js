@@ -1,36 +1,54 @@
 /* global $, _  */
 
-const indexPage = (() => {
+const home = (() => {
   let state = {
-    activeSection: 'contacts',
-    detail: {}
+    activeSection: '',
+    scroll0: true
   }
 
   function splitCamelCaseToString (s) {
     return s.split(/(?=[A-Z])/).join(' ').replace(/^./, (l) => { return l.toUpperCase() })
   }
 
+  function onNavClick (e) {
+    e.preventDefault()
+    const sectionSelector = $(e.target).attr('href')
+    $('html,body').animate({
+      scrollTop: $(sectionSelector).offset().top - 60
+    })
+  }
+
+  function renderCover () {
+    const {role, name} = state.detail.experiences[0]
+    document.getElementById('cover').innerHTML = `
+      <div class='bg-content'>
+        <h2>Hi, This is Puxuan He</h2>
+        <p>I'm a ${role} at ${name}</p>
+      </div>
+    `
+  }
+
   function renderNav () {
     document.getElementById('nav').innerHTML = `
-      <nav>
+      <nav ${state.scroll0 ? 'class="scroll0"' : ''}>
         <ul class="vertical medium-horizontal menu">
           <li>
             <h3 class="logo"><a href="/">${state.detail.name}</a></h3>
           </li>
           <li ${state.activeSection === 'contacts' ? 'class="active"' : ''}>
-            <a class="in-site" href="#contacts">Contact</a>
+            <a onclick="home.onNavClick(event)" href="#contacts">Contact</a>
           </li>
           <li ${state.activeSection === 'experiences' ? 'class="active"' : ''}>
-            <a class="in-site" href="#experiences">Experience</a>
+            <a onclick="home.onNavClick(event)" href="#experiences">Experience</a>
           </li>
           <li ${state.activeSection === 'skills' ? 'class="active"' : ''}>
-            <a class="in-site" href="#skills">Skills</a>
+            <a onclick="home.onNavClick(event)" href="#skills">Skills</a>
           </li>
           <li ${state.activeSection === 'educations' ? 'class="active"' : ''}>
-            <a class="in-site" href="#educations">Education</a>
+            <a onclick="home.onNavClick(event)" href="#educations">Education</a>
           </li>
           <li ${state.activeSection === 'projects' ? 'class="active"' : ''}>
-            <a class="in-site" href="#projects">Projects</a>
+            <a onclick="home.onNavClick(event)" href="#projects">Projects</a>
           </li>
           <li>
             <a href="https://github.com/hepuxuan/">Github</a>
@@ -38,14 +56,6 @@ const indexPage = (() => {
         </ul>
       </nav>
     `
-
-    $('nav a.in-site').on('click', (e) => {
-      e.preventDefault()
-      const sectionSelector = $(e.target).attr('href')
-      $('html,body').animate({
-        scrollTop: $(sectionSelector).offset().top - 60
-      })
-    })
   }
 
   function renderContact () {
@@ -68,22 +78,18 @@ const indexPage = (() => {
   }
 
   function renderExperience (experience) {
-    const name = experience.name
-    const range = experience.range
-    delete experience.name
-    delete experience.range
-    const rest = experience
+    const {name, range, ...rest} = experience
     return `
       <section>
         <section class="row align-justify">
           <div class="small-12 medium-12 large-8 columns">
             <h5>${name}</h5>
           </div>
-          <div class="small-12 medium-12 large-4 columns"> 
+          <div class="small-12 medium-12 large-4 columns">
             ${range}
           </div>
         </section>
-        
+
         ${_.map(rest, (value, key) => {
           return `
             <section class="row">
@@ -151,6 +157,7 @@ const indexPage = (() => {
 
   function renderBackbone () {
     const template = `
+      <div id="cover" class='bg-image'></div>
       <div class="page-body">
         <header id="nav"></header>
         <main>
@@ -166,41 +173,54 @@ const indexPage = (() => {
         </main>
       </div>
     `
-    document.getElementById('root').innerHTML = template
+    document.getElementById('root').outerHTML = template
   }
 
   function render () {
     renderBackbone()
+    renderCover()
     renderNav()
     renderContact()
     renderExperiences()
     renderSkills()
     renderEducation()
     renderProjects()
+  }
 
+  function init () {
     $(document).on('scroll', () => {
       $('.main-box').each((i, box) => {
         const $box = $(box)
         const currentScroll = $(document).scrollTop()
-        if (currentScroll > $box.offset().top && currentScroll < ($box.height() + $box.offset().top)) {
-          const newActiveSection = $box.attr('id')
-          if (newActiveSection !== state.activeSection) {
-            state.activeSection = $box.attr('id')
+        if (currentScroll === 0) {
+          state.scroll0 = true
+          state.activeSection = ''
+          renderNav()
+        } else if (currentScroll > $box.offset().top && currentScroll < ($box.height() + $box.offset().top)) {
+          if (state.scroll0) {
+            state.scroll0 = false
             renderNav()
+          } else {
+            const newActiveSection = $box.attr('id')
+            if (newActiveSection !== state.activeSection) {
+              state.activeSection = $box.attr('id')
+              renderNav()
+            }
           }
         }
       })
+    })
+
+    return $.getJSON('profile.json').then((detail) => {
+      state.detail = detail
     })
   }
 
   return {
     render,
-    state
+    init,
+    onNavClick
   }
 })()
 
-$(document).ready(() => {
-  $.getJSON('profile.json').then((detail) => {
-    indexPage.state.detail = detail
-  }).done(indexPage.render)
-})
+home.init().done(home.render)

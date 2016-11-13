@@ -1,13 +1,36 @@
 .page-body {
-    background: #fff;
+    background: #f9f9f9;;
     padding-right: 30px;
     padding-left: 30px;
     max-width: 1280px;
     margin: auto;
-    background-color: rgb(255, 255, 255);
     padding-bottom: 40px;
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
+}
+
+.bg-image {
+  background-image: url("bg-min.jpg");
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.bg-content {
+  padding-top: 20%;
+  padding-left: 10%;
+  color: #f9f9f9;;
+}
+
+.bg-content a {
+  color: #f9f9f9;
+  text-decoration: underline;
+}
+
+.bg-content p {
+  font-size: 1.5em;
 }
 
 .title {
@@ -26,7 +49,7 @@ section {
   .page-body{
     position: relative;
   }
-  header {
+  nav {
     position: fixed;
     max-width: 1280px;
     padding-right: 30px;
@@ -40,23 +63,29 @@ section {
   }
 }
 
-@media (min-width: 640px) and (max-width: 770px) {
-  header {
-    height: 100px;
-  }
+.scroll0 {
+  background-color: rgba(255,255,255, 0);
+  color: #f9f9f9;;
+}
 
-  main {
-    margin-top: 100px;
+.scroll0 a:hover, .bg-content a:hover {
+  color: #f9f9f9;
+  font-weight: bold;
+}
+
+.scroll0 a {
+  color: #f9f9f9;;
+}
+
+@media (min-width: 640px) and (max-width: 770px) {
+  nav {
+    height: 100px;
   }
 }
 
 @media (min-width: 771px) {
-  header {
+  nav {
     height: 60px;
-  }
-
-  main {
-    margin-top: 60px;
   }
 }
 
