@@ -2,12 +2,11 @@
 
 const home = (() => {
   let state = {
-    activeSection: '',
-    scroll0: true
+    activeSection: 'cover'
   }
 
   function splitCamelCaseToString (s) {
-    return s.split(/(?=[A-Z])/).join(' ').replace(/^./, (l) => { return l.toUpperCase() })
+    return s.split(/(?=[A-Z])/).join(' ').replace(/^./, l => l.toUpperCase())
   }
 
   function onNavClick (e) {
@@ -30,7 +29,7 @@ const home = (() => {
 
   function renderNav () {
     document.getElementById('nav').innerHTML = `
-      <nav ${state.scroll0 ? 'class="scroll0"' : ''}>
+      <nav ${state.activeSection === 'cover' ? 'class="scroll0"' : ''}>
         <ul class="vertical medium-horizontal menu">
           <li>
             <h3 class="logo"><a href="/">${state.detail.name}</a></h3>
@@ -77,8 +76,7 @@ const home = (() => {
     `
   }
 
-  function renderExperience (experience) {
-    const {name, range, ...rest} = experience
+  function renderExperience ({name, range, ...rest}) {
     return `
       <section>
         <section class="row align-justify">
@@ -90,14 +88,12 @@ const home = (() => {
           </div>
         </section>
 
-        ${_.map(rest, (value, key) => {
-          return `
+        ${_.map(rest, (value, key) => `
             <section class="row">
               <div class="small-12 medium-12 large-2 columns item-label">${splitCamelCaseToString(key)}:</div>
               <div class="small-12 medium-12 large-10 columns">${value}</div>
             </section>
-          `
-        }).join('')}
+          `).join('')}
       </section>
     `
   }
@@ -106,7 +102,25 @@ const home = (() => {
     const experiences = state.detail.experiences
     document.getElementById('experiences').innerHTML = `
       <h4 class="title">Experience:</h4>
-      ${_.map(experiences, renderExperience).join('')}
+        ${_.map(experiences, ({name, range, ...rest}) => `
+        <section>
+          <section class="row align-justify">
+            <div class="small-12 medium-12 large-8 columns">
+              <h5>${name}</h5>
+            </div>
+            <div class="small-12 medium-12 large-4 columns">
+              ${range}
+            </div>
+          </section>
+
+          ${_.map(rest, (value, key) => `
+              <section class="row">
+                <div class="small-12 medium-12 large-2 columns item-label">${splitCamelCaseToString(key)}:</div>
+                <div class="small-12 medium-12 large-10 columns">${value}</div>
+              </section>
+            `).join('')}
+        </section>
+      `).join('')}
     `
   }
 
@@ -114,14 +128,12 @@ const home = (() => {
     const skills = state.detail.skills
     document.getElementById('skills').innerHTML = `
       <h4>Skills:</h4>
-      ${_.map(skills, (value, key) => {
-        return `
+      ${_.map(skills, (value, key) => `
           <section class="row">
             <div class="small-12 medium-12 large-2 columns item-label">${splitCamelCaseToString(key)}:</div>
             <div class="small-12 medium-12 large-10 columns">${value}</div>
           </section>
-        `
-      }).join('')}
+        `).join('')}
     `
   }
 
@@ -129,14 +141,12 @@ const home = (() => {
     const educations = state.detail.educations
     document.getElementById('educations').innerHTML = `
       <h4>Education:</h4>
-      ${_.map(educations, (education) => {
-        return `
+      ${_.map(educations, (education) => `
           <section class="row align-justify">
             <div class="small-12 medium-12 large-8 columns">${education.degree},&nbsp;&nbsp;${education.school}</div>
             <div class="small-12 medium-12 large-4 columns">${education.range}</div>
           </section>
-        `
-      }).join('')}
+        `).join('')}
     `
   }
 
@@ -144,20 +154,18 @@ const home = (() => {
     const projects = state.detail.projects
     document.getElementById('projects').innerHTML = `
       <h4>Project:</h4>
-      ${_.map(projects, (project) => {
-        return `
+      ${_.map(projects, (project) => `
           <section class="row align-justify">
             <h5>${project.name}:</h5>
             <section>${project.details}</section>
           </section>
-        `
-      }).join('')}
+        `).join('')}
     `
   }
 
   function renderBackbone () {
     const template = `
-      <div id="cover" class='bg-image'></div>
+      <div id="cover" class='main-box bg-image'></div>
       <div class="page-body">
         <header id="nav"></header>
         <main>
@@ -189,31 +197,18 @@ const home = (() => {
 
   function init () {
     $(document).on('scroll', () => {
-      $('.main-box').each((i, box) => {
+      const currentScroll = $(document).scrollTop()
+      const currentBox = $('.main-box').filter((i, box) => {
         const $box = $(box)
-        const currentScroll = $(document).scrollTop()
-        if (currentScroll === 0) {
-          state.scroll0 = true
-          state.activeSection = ''
-          renderNav()
-        } else if (currentScroll > $box.offset().top && currentScroll < ($box.height() + $box.offset().top)) {
-          if (state.scroll0) {
-            state.scroll0 = false
-            renderNav()
-          } else {
-            const newActiveSection = $box.attr('id')
-            if (newActiveSection !== state.activeSection) {
-              state.activeSection = $box.attr('id')
-              renderNav()
-            }
-          }
-        }
+        return currentScroll >= $box.offset().top && currentScroll < ($box.height() + $box.offset().top)
       })
+      if (state.activeSection !== currentBox.attr('id')) {
+        state.activeSection = currentBox.attr('id')
+        renderNav()
+      }
     })
 
-    return $.getJSON('profile.json').then((detail) => {
-      state.detail = detail
-    })
+    return $.getJSON('profile.json').then(detail => state.detail = detail)
   }
 
   return {
