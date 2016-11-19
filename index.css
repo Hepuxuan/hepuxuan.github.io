@@ -9,7 +9,7 @@
 }
 
 .bg-image {
-  background-image: url("bg-min.jpg");
+  background-image: url("bg-min.png");
   height: 100%;
   width: 100%;
   background-size: cover;
