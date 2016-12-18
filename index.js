@@ -141,29 +141,7 @@ const home = (() => {
     `
   }
 
-  function renderBackbone () {
-    const template = `
-      <div id="cover" class='main-box bg-image'></div>
-      <div class="page-body">
-        <header id="nav"></header>
-        <main>
-          <section class="main-box" id="contacts"></section>
-          <hr/>
-          <section class="main-box" id="experiences"></section>
-          <hr/>
-          <section class="main-box" id="skills"></section>
-          <hr/>
-          <section class="main-box" id="educations"></section>
-          <hr/>
-          <section class="main-box" id="projects"></section>
-        </main>
-      </div>
-    `
-    document.getElementById('root').outerHTML = template
-  }
-
   function render () {
-    renderBackbone()
     renderCover()
     renderNav()
     renderContact()
