@@ -30,29 +30,37 @@ const home = (() => {
   function renderNav () {
     document.getElementById('nav').innerHTML = `
       <nav ${state.activeSection === 'cover' ? 'class="scroll0"' : ''}>
-        <ul class="vertical medium-horizontal menu">
-          <li>
-            <h3 class="logo"><a href="/">${state.detail.name}</a></h3>
-          </li>
-          <li ${state.activeSection === 'contacts' ? 'class="active"' : ''}>
-            <a onclick="home.onNavClick(event)" href="#contacts">Contact</a>
-          </li>
-          <li ${state.activeSection === 'experiences' ? 'class="active"' : ''}>
-            <a onclick="home.onNavClick(event)" href="#experiences">Experience</a>
-          </li>
-          <li ${state.activeSection === 'skills' ? 'class="active"' : ''}>
-            <a onclick="home.onNavClick(event)" href="#skills">Skills</a>
-          </li>
-          <li ${state.activeSection === 'educations' ? 'class="active"' : ''}>
-            <a onclick="home.onNavClick(event)" href="#educations">Education</a>
-          </li>
-          <li ${state.activeSection === 'projects' ? 'class="active"' : ''}>
-            <a onclick="home.onNavClick(event)" href="#projects">Projects</a>
-          </li>
-          <li>
-            <a href="https://github.com/hepuxuan/">Github</a>
-          </li>
-        </ul>
+        <div class="row">
+          <div class="small-12 medium-6 large-6 columns">
+            <ul class="vertical medium-horizontal menu">
+              <li>
+                <h3 class="logo"><a href="/">Puxuan's Home</a></h3>
+              </li>
+            </ul>
+          </div>
+          <div class="small-12 medium-6 large-6 columns">
+            <ui class="vertical medium-horizontal menu large-right">
+              <li ${state.activeSection === 'contacts' ? 'class="active"' : ''}>
+                <a onclick="home.onNavClick(event)" href="#contacts">Contact</a>
+              </li>
+              <li ${state.activeSection === 'experiences' ? 'class="active"' : ''}>
+                <a onclick="home.onNavClick(event)" href="#experiences">Experience</a>
+              </li>
+              <li ${state.activeSection === 'skills' ? 'class="active"' : ''}>
+                <a onclick="home.onNavClick(event)" href="#skills">Skills</a>
+              </li>
+              <li ${state.activeSection === 'educations' ? 'class="active"' : ''}>
+                <a onclick="home.onNavClick(event)" href="#educations">Education</a>
+              </li>
+              <li ${state.activeSection === 'projects' ? 'class="active"' : ''}>
+                <a onclick="home.onNavClick(event)" href="#projects">Projects</a>
+              </li>
+              <li>
+                <a href="https://github.com/hepuxuan/">Github</a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </nav>
     `
   }
@@ -156,7 +164,8 @@ const home = (() => {
       const currentScroll = $(document).scrollTop()
       const currentBox = $('.main-box').filter((i, box) => {
         const $box = $(box)
-        return currentScroll >= $box.offset().top && currentScroll < ($box.height() + $box.offset().top)
+        const halfWindowHeight = $(window).height() / 2
+        return currentScroll + halfWindowHeight >= $box.offset().top && currentScroll + halfWindowHeight < ($box.height() + $box.offset().top)
       })
       if (state.activeSection !== currentBox.attr('id')) {
         state.activeSection = currentBox.attr('id')
@@ -166,14 +175,14 @@ const home = (() => {
 
     return $.getJSON('profile.json').then(detail => {
       state.detail = detail
+      render()
     })
   }
 
   return {
-    render,
     init,
     onNavClick
   }
 })()
 
-home.init().done(home.render)
+home.init()

@@ -39,6 +39,11 @@ section {
   .page-body{
     position: relative;
   }
+
+  #nav {
+    margin-top: 10px;
+  }
+
   .scroll0 {
     background-color: rgba(249,249,249, 0);
     color: #f9f9f9;
@@ -83,6 +88,9 @@ section {
 @media (min-width: 771px) {
   nav {
     height: 60px;
+  }
+  .large-right {
+    float: right;
   }
 }
 
