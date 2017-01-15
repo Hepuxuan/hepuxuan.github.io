@@ -1,31 +1,64 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Puxuan</title>
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="foundation.min.css">
-    <script src="jquery-3.1.1.min.js"></script>
-    <script src="underscore-min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Puxuan He</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.grey-orange.min.css">
+    <link rel="stylesheet" href="styles.css">
   </head>
-  <body style="background-color: #f9f9f9">
-    <div id="cover" class='main-box bg-image'></div>
-    <div class="page-body">
-      <header id="nav"></header>
-      <main>
-        <section class="main-box" id="contacts"></section>
-        <hr/>
-        <section class="main-box" id="experiences"></section>
-        <hr/>
-        <section class="main-box" id="skills"></section>
-        <hr/>
-        <section class="main-box" id="educations"></section>
-        <hr/>
-        <section class="main-box" id="projects"></section>
+  <body>
+    <header class="mdl-layout__header mdl-layout__header--transparent">
+      <div class="mdl-layout__header-row">
+        <span class="mdl-layout-title">Puxuan's Home</span>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation">
+          <a class="mdl-navigation__link" href="index.html">Posts</a>
+          <a class="mdl-navigation__link" href="resume.html">Resume</a>
+        </nav>
+      </div>
+    </header>
+    <div class="demo-blog mdl-layout mdl-js-layout has-drawer is-upgraded">
+      <main class="mdl-layout__content">
+        <div class="demo-blog__posts mdl-grid">
+          <div class="mdl-card on-the-road-again mdl-cell mdl-cell--12-col">
+            <div class="mdl-card__media mdl-color-text--grey-50">
+              <h3><a href="blog1.html"> Use Class properties in your react project</a></h3>
+            </div>
+            <div class="mdl-color-text--grey-600 mdl-card__supporting-text">
+              ReactJs is a rather popular Javascript framework to build UI. Everything looks wonderful until I start to attach callback functions to a button or a link...
+            </div>
+            <div class="mdl-card__supporting-text meta mdl-color-text--grey-600">
+              <div class="minilogo"></div>
+              <div>
+                <strong>The Newist</strong>
+                <span>01/13/2017</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
+      <div class="mdl-layout__obfuscator"></div>
     </div>
-    <script src="build.js"></script>
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script>
+      Array.prototype.forEach.call(document.querySelectorAll('.mdl-card__media'), function(el) {
+        var link = el.querySelector('a');
+        if(!link) {
+          return;
+        }
+        var target = link.getAttribute('href');
+        if(!target) {
+          return;
+        }
+        el.addEventListener('click', function() {
+          location.href = target;
+        });
+      });
+    </script>
   </body>
 </html>
