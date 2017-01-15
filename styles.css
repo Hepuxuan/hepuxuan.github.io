@@ -211,9 +211,7 @@ body .demo-blog {
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
 }
-.demo-blog .start-react .mdl-card__media {
-  background-image: url('images/react.jpg');
-}
+
 .demo-blog .demo-blog__posts > .demo-nav {
   margin: 12px 15px;
   display: -webkit-flex;
@@ -270,13 +268,14 @@ body .demo-blog {
 .demo-blog--blogpost .custom-header {
   background-color: transparent;
 }
-.demo-blog--blogpost .demo-blog__posts > .mdl-card .mdl-card__media {
+
+.start-react {
   background-image: url('images/react.jpg');
   height: 350px;
 }
 
-.demo-blog__posts > .mdl-card .mdl-card__media {
-  background-image: url('images/react.jpg');
+.require-js {
+  background-image: url('images/js.jpg');
   height: 350px;
 }
 
